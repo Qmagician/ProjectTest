@@ -8,7 +8,9 @@
     <el-table-column prop="description" label="描述" min-width="65%" align="center">
     </el-table-column>
     <el-table-column prop="link" label="跳转" min-width="15%" align="center">
-      <el-button type='primary' @click="gotoScreenShotUpload">截图上传</el-button>
+      <template slot-scope="scope">
+        <el-button type='primary' @click="gotoPage(scope.row)">截图上传</el-button>
+      </template>
     </el-table-column>
   </el-table>
     
@@ -22,15 +24,23 @@ export default {
     return {
       tableData: [{
           function: '截图上传',
-          description: '截图上传，在上传图片前可先对图片进行剪切，再上传。',
-        }, ]
+          description: '截图上传，在上传图片前可先对图片进行剪切，再上传(该功能目前存在兼容性，IE 只支持 JPG 格式)。',
+          link: '/ScreenShotUpload'
+        }, 
+        {
+          function: '截图上传',
+          description: '截图上传，在上传图片前可先对图片进行剪切，再上传(IE 支持 JPG、PNG 格式)。',
+          link: '/UploadImgCompatible'
+        },
+        ]
     };
   },
 
   methods: {
-    gotoScreenShotUpload()
+    gotoPage(row)
     {
-      this.$router.push({path:'/ScreenShotUpload'});
+      console.log(row);
+      this.$router.push({path:row.link});
     }
   },
 }
