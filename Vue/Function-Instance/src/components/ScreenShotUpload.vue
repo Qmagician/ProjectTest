@@ -91,6 +91,22 @@ export default {
             // .catch(_ => {});
         },
 
+        //创建url路径
+        getObjectURL(file) {
+          var url = null;
+          if (window.createObjectURL != undefined) {
+            // basic
+            url = window.createObjectURL(file);
+          } else if (window.URL != undefined) {
+            // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+          } else if (window.webkitURL != undefined) {
+            // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+          }
+          return url;
+        },
+
         setImage(files) {
             let THIS = this;
             const file = files.raw;
@@ -105,8 +121,10 @@ export default {
             reader.onload = (event) => {
                 debugger
                 this.imgSrc = event.target.result;
+                var url = this.getObjectURL(file);
+                this.$refs.cropper.replace(url);
                 // rebuild cropperjs with the updated source
-                this.$refs.cropper.replace(event.target.result);
+                //this.$refs.cropper.replace(event.target.result);
             };
             reader.readAsDataURL(file);
             } else {
