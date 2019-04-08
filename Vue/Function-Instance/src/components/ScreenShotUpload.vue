@@ -1,5 +1,6 @@
 <template>
     <div>
+        <el-button type='primary' >截图上传</el-button>
         <h1>截图上传</h1>
 
         <!-- 上传图片 -->
@@ -23,9 +24,12 @@
             <div style="width: 400px; height:300px; border: 1px solid gray; display: inline-block; margin-top: 20px;">
                 <vue-cropper
                     ref='cropper'
+                    :aspectRatio="1"
+                    :cropBoxResizable="false"
+                    :minCropBoxWidth="152"
                     :guides="true"
-                    :view-mode="2"
-                    drag-mode="crop"
+                    :view-mode="0"
+                    drag-mode="none"
                     :auto-crop-area="0.5"
                     :min-container-width="250"
                     :min-container-height="180"
@@ -43,8 +47,12 @@
             <br/>
             <br />
 
-            <el-button size="mini" type="primary" plain @click="cropImage" v-if="imgSrc != ''" style="margin-right: 40px;">剪切</el-button>
-            <el-button size="mini" type="primary" plain @click="rotate" v-if="imgSrc != ''">旋转</el-button>
+            
+            <el-button size="mini" type="primary" plain @click="zoomBig" v-if="imgSrc != ''" style="margin-left: -150px;">放大</el-button>
+            <el-button size="mini" type="primary" plain @click="zoomSmall" v-if="imgSrc != ''">缩小</el-button>
+            <el-button size="mini" type="primary" plain @click="rotateRight" v-if="imgSrc != ''">右转</el-button>
+            <el-button size="mini" type="primary" plain @click="rotateLeft" v-if="imgSrc != ''">左转</el-button>
+            <el-button size="mini" type="primary" plain @click="cropImage" v-if="imgSrc != ''" >剪切</el-button>
 
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
@@ -110,11 +118,24 @@ export default {
             // get image data for post processing, e.g. upload or setting image src
             this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL();
         },
-        rotate() {
+
+        zoomBig() {
+            this.$refs.cropper.relativeZoom(0.1);
+        },
+
+        zoomSmall() {
+            this.$refs.cropper.relativeZoom(-0.1);
+        },
+
+        rotateRight() {
             // guess what this does :)
             this.$refs.cropper.rotate(90);
         },
 
+        rotateLeft() {
+            // guess what this does :)
+            this.$refs.cropper.rotate(-90);
+        },
 
         submit() {
             this.dialogVisible = false;

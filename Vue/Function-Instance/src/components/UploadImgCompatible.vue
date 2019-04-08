@@ -146,7 +146,7 @@ export default {
 };
 </script> 
   
-<style>
+<style lang="stylus" scoped>
 #demo #button,#demo #cancel {
   position: absolute;
   right: 10px;
